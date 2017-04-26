@@ -39,7 +39,7 @@ class Diary(object):
     def subject_average(self, subject):
         sum=0
         for std in self.subjects[subject]:
-            sum=sum+self.get_std_average_grade_in_subject(subject, std)
+            sum=sum+self.std_average_grade_in_subject(subject, std)
         return sum/len(self.subjects[subject])
 
     def std_average_grade_in_subject(self,subjet, std):
