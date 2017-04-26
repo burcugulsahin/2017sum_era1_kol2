@@ -14,51 +14,50 @@
 # If you have enough courage and time, try storing (reading/writing) 
 # data in text files (YAML, JSON).
 # If you have even more courage, try implementing user interface.
-
 import json
 
-class Diary(object):
-    
+class School(object):
+    """docstring for School."""
     def __init__(self):
-        super(Diary, self).__init__()
+        super(School, self).__init__()
         self.cont=0
         self.subjects={}
 
-    def course(self, subject):
+    def create_course(self, subject):
         self.subjects[subject]={}
 
-    def enrroll_std_in_subject(self, subject, stdname, stdsurname):
-        self.subjects[subject][stdname]=[stdsurname,0,[]]
+    def enrroll_student_in_subject(self, subject, student_name, student_surname):
+        self.subjects[subject][student_name]=[student_surname,0,[]]
 
-    def addgrade(self,subject,stdname,grade ):
-        self.subjects[subject][stdname][2].append(grade)
+    def add_grade(self,subject,student_name,grade ):
+        self.subjects[subject][student_name][2].append(grade)
 
-    def attendence(self,subject,stdname):
-        self.subjects[subject][stdname][1]+=1
+    def attend(self,subject,student_name):
+        self.subjects[subject][student_name][1]+=1
 
-    def subject_average(self, subject):
+    def get_subject_avg(self, subject):
         sum=0
         for std in self.subjects[subject]:
-            sum=sum+self.std_average_grade_in_subject(subject, std)
+            sum=sum+self.get_student_avg_grade_in_subject(subject, std)
         return sum/len(self.subjects[subject])
 
-    def std_average_grade_in_subject(self,subjet, std):
+    def get_student_avg_grade_in_subject(self,subjet, student):
         sum=0
         self.cont+=1
-        for grade in self.subjects[subjet][std][2]:
+        for grade in self.subjects[subjet][student][2]:
             sum= sum+grade
-        sum=sum/len(self.subjects[subjet][std][2])
+        sum=sum/len(self.subjects[subjet][student][2])
         return sum
-    def stds_total_average(self):
+    def get_total_students_avg(self):
         sum=0
         for sbjt in self.subjects:
-            sum=sum+ self.subject_average(sbjt)
+            sum=sum+ self.get_subject_avg(sbjt)
         return sum/len(self.subjects)
-    def std_average_in_total(self,std):
+    def get_student_avg_in_total(self,student):
         sum=0;
         self.cont=0
         for sbjt in self.subjects:
-            sum=sum+self.std_average_grade_in_subject(sbjt,std)
+            sum=sum+self.get_student_avg_grade_in_subject(sbjt,student)
         sum=sum/self.cont
         return sum
     def get_json(self):
@@ -69,14 +68,15 @@ class Diary(object):
             self.subjects=json.load(data_file)
         pass
 print('build')
-diary= Diary()
-diary.course('python')
-diary.enrroll_std_in_subject('python','Burcu','Gülşahin')
-diary.attendence('python','Burcu')
-diary.get_json()
-print(diary.subjects)
-print(diary.stds_total_average())
-print(diary.std_average_in_total('Burcu'))
-diary.subjects={}
-diary.init_from_json()
-print(diary.subjects)
+school= School()
+school.create_course('python')
+school.enrroll_student_in_subject('python','Burcu','Gulsahin')
+school.attend('python','Burcu')
+school.add_grade('python','Burcu',10)
+school.get_json()
+print(school.subjects)
+print(school.get_total_students_avg())
+print(school.get_student_avg_in_total('Burcu'))
+school.subjects={}
+school.init_from_json()
+print(school.subjects)
